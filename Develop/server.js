@@ -1,6 +1,5 @@
 const express = require("express");
 const fs = require("fs");
-const notes = require("./db/db.json");
 const { v4: uuidv4 } = require("uuid");
 
 const PORT = process.env.PORT || 3001;
@@ -9,7 +8,6 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 app.use(express.static("public"));
 
 //HTML routes
@@ -24,13 +22,15 @@ app.get("*", (req, res) => {
 //API routes
 //retrieves existing notes to be displayed
 app.get("/api/notes", (req, res) => {
-  fs.readFile(`${__dirname}/db/db.json`);
-  if (err) {
-    res.sendStatus(500);
-    console.log("An error occured retrieving your note.");
-  } else {
-    return res.json(JSON.parse(notes));
-  }
+  fs.readFile(`${__dirname}/db/db.json`, (err, notes) => {
+    if (err) {
+      res.sendStatus(500);
+      console.log("An error occured retrieving your note.");
+    } else {
+      res.json(JSON.parse(notes));
+      console.log("Check and check!");
+    }
+  });
 });
 
 // POST /api/notes should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client.
@@ -39,50 +39,53 @@ app.post("/api/notes", (req, res) => {
   console.log("POST request received");
   //destructure items in req.body
   const { title, text } = req.body;
-  try {
-    if (title || (title && text)) {
-        fs.readFile(`${__dirname}/db/db.json`, (err, notesData) => {
-          if (err) {
-            res.sendStatus(500);
-            console.log("Unable to retrieve notes");
-          } else {
-              const newNote = {
-                id: uuidv4(),
-                title,
-                text,
-                };
-                console.log(newNote);
-            const notes = JSON.parse(notesData);
-            notes.push(newNote);
-            fs.writeFile(`${__dirname}/db/db.json`, JSON.stringify(notes), (err) => {
-              if (err) {
-                res.sendStatus(500)
-                console.log('There was an issue saving your note');
-              } else {
-                  console.log('Note saved successfully');
-                  res.sendStatus(200);
-                }
-            });
-            } 
-        })
-    } 
-} catch {
-        res.sendStatus(400);
-        console.log("You must include a title and text for your note.");
-      };
-    });
 
+  fs.readFile(`${__dirname}/db/db.json`, (err, notesData) => {
+    if (err) {
+      res.sendStatus(500);
+      console.log("Unable to retrieve notes");
+    } else {
+      const newNote = {
+        id: uuidv4(),
+        title,
+        text,
+      };
+      console.log(newNote);
+      const notes = JSON.parse(notesData);
+      notes.push(newNote);
+      
+    fs.writeFile(`${__dirname}/db/db.json`, JSON.stringify(notes), (err) => {
+        if (err) {
+          res.sendStatus(500);
+          console.log("There was an issue saving your note");
+        } else {
+          console.log("Note saved successfully");
+          res.sendStatus(200);
+        }
+      });
+    }
+  });
+});
 
 app.delete("/api/notes/:id", (req, res) => {
-  if (err) {
-    res.sendStatus(500);
-    console.log("A problem occurred with deleting your note.");
-  } else {
-    fs.readFile(`${__dirname}/db/db.json`);
-    notes.filter(id !== req.params.id);
-    res.json(notes);
-    console.log("Your note was deleted.");
-  }
+  fs.readFile(`${__dirname}/db/db.json`, (err, notes) => {
+    if (err) {
+      res.sendStatus(500);
+      console.log("A problem occurred with deleting your note.");
+    } else {
+      const notes = JSON.parse(notes).filter(id !== req.params.id);
+      console.log("Your note was deleted.");
+      fs.writeFile(`${__dirname}/db/db.json`, JSON.stringify(notes), (err) => {
+        if (err) {
+          res.sendStatus(500);
+          console.log("There was an issue deleting your note");
+        } else {
+          console.log("Note deleted successfully");
+          res.sendStatus(200);
+        }
+      });
+    }
+  });
 });
 
 app.listen(PORT, () => {
