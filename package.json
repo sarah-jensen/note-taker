@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "express": "^4.16.4",
     "fs": "^0.0.1-security",
     "uuid": "^9.0.0"
