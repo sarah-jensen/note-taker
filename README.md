@@ -8,6 +8,7 @@
   
   * [Technologies_Used](#technologies-used)
   * [Installation](#installation)
+  * [Preview](#preview)
   * [Usage](#usage)
   * [Credits](#credits)
   * [Tests](#tests)
@@ -23,13 +24,21 @@
 
   
   ## Installation
-  N/A; you may access the application here.
+  N/A; you may access the application [here](https://github.com/sarah-jensen/note-taker).
+  
+  ## Preview
+  ![A note application consisting of title and text fields. A list of previously saved notes is on the left side of the page.](./public/assets/images/note-taker-sample.png)
+
   
   ## Usage
-  On the Note-Taker Application landing page, click the "Get Started" button to create and manage your notes. Click the "+" button to create a new note; your note must contain a title or a title+body to be saved. Save your note by clicking the "save" icon.
+  - On the Note-Taker Application landing page, click the "Get Started" button to create and manage your notes. 
+  - Click the "+" button to create a new note; your note must contain a title and a body to be saved. 
+  - Save your note by clicking the "save" icon.
+  - Your saved notes will display on the left side of the page. Click the title of a note to view it.
+  - Click the "delete" icon to delete a note.
   
   ## Credits
-  Source code provided by UC Berkeley Fullstack Flex Web Developemnt coding bootcamp.
+  Source code provided by UC Berkeley Fullstack Flex Web Development coding bootcamp.
   License badges created by [shields.io](https://shields.io/) 
   
   ## Tests
