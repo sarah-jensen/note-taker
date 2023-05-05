@@ -24,7 +24,7 @@
 
   
   ## Installation
-  N/A; you may access the application [here](https://github.com/sarah-jensen/note-taker).
+  N/A; you may access the application [here](https://github.com/sarah-jensen/note-taker)
   
   ## Preview
   ![A note application consisting of title and text fields. A list of previously saved notes is on the left side of the page.](./public/assets/images/note-taker-sample.png)
