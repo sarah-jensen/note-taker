@@ -8,6 +8,7 @@
   
   * [Technologies_Used](#technologies-used)
   * [Installation](#installation)
+  * [Preview](#preview)
   * [Usage](#usage)
   * [Credits](#credits)
   * [Tests](#tests)
@@ -24,6 +25,10 @@
   
   ## Installation
   N/A; you may access the application [here](https://github.com/sarah-jensen/note-taker).
+  
+  ## Preview
+  ![A note application consisting of title and text fields. A list of previously saved notes is on the left side of the page.](./public/assets/images/note-taker-sample.png)
+
   
   ## Usage
   - On the Note-Taker Application landing page, click the "Get Started" button to create and manage your notes. 
