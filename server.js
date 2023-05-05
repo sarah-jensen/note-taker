@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
+const path = require('path');
 
 const PORT = process.env.PORT || 3001;
 
@@ -10,28 +11,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-//HTML routes
-app.get("/notes", (req, res) => {
-  res.sendFile(`${__dirname}/public/notes.html`);
-});
-
-app.get("*", (req, res) => {
-  res.sendFile(`${__dirname}/public/index.html`);
-});
-
 //API routes
 //retrieves existing notes to be displayed
 app.get("/api/notes", (req, res) => {
-  fs.readFile(`${__dirname}/db/db.json`, (err, notes) => {
+  fs.readFile('./db/db.json', (err, notes) => {
     if (err) {
       res.sendStatus(500);
-      console.log("An error occured retrieving your note.");
+      console.log(err);
     } else {
       res.json(JSON.parse(notes));
       console.log("Check and check!");
     }
   });
 });
+
+//HTML routes
+app.get("/notes", (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/notes.html'));
+});
+
+
 
 // POST /api/notes should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client.
 app.post("/api/notes", (req, res) => {
@@ -68,14 +67,14 @@ app.post("/api/notes", (req, res) => {
 });
 
 app.delete("/api/notes/:id", (req, res) => {
-  fs.readFile(`${__dirname}/db/db.json`, (err, notes) => {
+  fs.readFile(path.join(__dirname, '/db/db.json'), (err, notesData) => {
     if (err) {
       res.sendStatus(500);
       console.log("A problem occurred with deleting your note.");
     } else {
-      const notes = JSON.parse(notes).filter(id !== req.params.id);
+      const notes = JSON.parse(notesData).filter(notesData => notesData.id !== req.params.id);
       console.log("Your note was deleted.");
-      fs.writeFile(`${__dirname}/db/db.json`, JSON.stringify(notes), (err) => {
+      fs.writeFile(path.join(__dirname, '/db/db.json'), JSON.stringify(notes), (err) => {
         if (err) {
           res.sendStatus(500);
           console.log("There was an issue deleting your note");
@@ -86,6 +85,10 @@ app.delete("/api/notes/:id", (req, res) => {
       });
     }
   });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(`${__dirname}/public/index.html`);
 });
 
 app.listen(PORT, () => {
